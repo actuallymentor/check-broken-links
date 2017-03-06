@@ -1,0 +1,31 @@
+{
+  "name": "check-broken-links",
+  "version": "1.0.0",
+  "description": "Check array of links for contained broken links.",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register --trace-warnings"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/actuallymentor/check-broken-links.git"
+  },
+  "keywords": [
+    "broken",
+    "link",
+    "checker",
+    "test"
+  ],
+  "author": "Mentor Palokaj <mentor@palokaj.co> (https://github.com/actuallymentor)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/actuallymentor/check-broken-links/issues"
+  },
+  "homepage": "https://github.com/actuallymentor/check-broken-links#readme",
+  "dependencies": {
+    "babel-core": "^6.23.1",
+    "babel-polyfill": "^6.23.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
