@@ -22,7 +22,7 @@ const extract = ( base, source, html ) => {
 	} )
 	.then( cleanlinks => {
 		return Promise.resolve( { source: source, links: cleanlinks } )
-	} )
+	} ).catch( console.log.bind( console ) )
 }
 
 module.exports = extract
