@@ -23,8 +23,13 @@ const checker = links => {
 			return extract( page.url, page.html ).catch( console.log.bind( console ) )
 		} ) )
 	} ).then( pageswlinks => {
-		console.log( pageswlinks )
-	} ).catch( console.log.bind( console ) )
+		return Promise.all( pageswlinks.map( pwlinks => {
+			return get( pwlinks ).catch( brokencrawled => { broken.crawled.push( brokencrawled ) } )
+		} ) )
+	} ).then( crawledlinks => {
+		console.log( crawledlinks )
+	} )
+	.catch( console.log.bind( console ) )
 	
 }
 
