@@ -1,18 +1,27 @@
 // Taken from https://mathiasbynens.be/demo/url-regex
-let hrefregex = new RegExp( /((src\w*=\w*["']|href\w*=\w*["'])(([\.\w_\-:\\\/&@#\(\)]*[\\\/])([^"^']*)))/, 'ig' )
+const jsdom = require( 'jsdom' )
 
-const extract = ( source, html ) => {
-	let hrefmatches = []
-	let matched
-	while ( matched = hrefregex.exec( html ) ) {
-		hrefmatches.push( matched[3] )
-	}
-	return Promise.resolve( {
-		source: source,
-		links: hrefmatches ? hrefmatches.map( matched => {
-			if ( process.env.debug ) console.log ( 'Found ' + matched.length + ' links in ' + source )
-			return { url: matched, status: 'unchecked' }
-		} ) : []
+const clean = require( __dirname + '/cleanlinks' )
+
+const makedom = html => {
+	return new Promise( ( resolve, reject ) => {
+		jsdom.env( html, ( err, window ) => {
+			if ( err ) return reject( err )
+			resolve( window )
+		} )
+	} )
+}
+
+const extract = ( base, source, html ) => {
+	return makedom( html )
+	.then( window => {
+		return Array.prototype.slice.call( window.document.links ).map( link => { return link.href } )
+	} )
+	.then( links => {
+		return clean( base, links )
+	} )
+	.then( cleanlinks => {
+		return Promise.resolve( { source: source, links: cleanlinks } )
 	} )
 }
 
