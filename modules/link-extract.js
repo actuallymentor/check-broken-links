@@ -18,6 +18,7 @@ const extract = ( base, source, html ) => {
 		return Array.prototype.slice.call( window.document.links ).map( link => { return link.href } )
 	} )
 	.then( links => {
+		if ( process.env.debug ) console.log( 'Parsing links for ' + source, links )
 		return clean( base, links )
 	} )
 	.then( cleanlinks => {
