@@ -5,7 +5,7 @@ const get = url => {
 			if ( process.env.debug ) console.log ( url + ' gave status ' + ( response ? response.statusCode : 'no response' ) )
 			if ( err ) return reject( { url: url, err: err } )
 			if ( !response ) return reject( { url: url, err: response.statusCode || 'no response' } )
-			response.statusCode == 200 ? resolve( { url: url, html: process.env.debug ? 'body' : body } ) : reject( { url: url, err: response.statusCode || 'no response' } )
+			response.statusCode == 200 ? resolve( { url: url, html: body } ) : reject( { url: url, err: response.statusCode || 'no response' } )
 		} )	
 	} )
 }
