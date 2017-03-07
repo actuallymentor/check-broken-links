@@ -14,20 +14,26 @@ const checker = links => {
 			broken.top.push( brokentop )
 		} )
 	} ) )
-	// Parse the loaded links
+	// Extract links from the supplied urls
 	.then( pages => {
 		pages = pages.filter( page => { return ( page != undefined ) } )
-		console.log( pages )
 		return Promise.all( pages.map( page => {
 			console.log( 'Page extract for ' + page.url )
 			return extract( page.url, page.html ).catch( console.log.bind( console ) )
 		} ) )
-	} ).then( pageswlinks => {
-		return Promise.all( pageswlinks.map( pwlinks => {
-			return get( pwlinks ).catch( brokencrawled => { broken.crawled.push( brokencrawled ) } )
+	} )
+	// Find broken links in the crwaled results
+	.then( pageswlinks => {
+		console.log( 'Extracted pages' )
+		// Parse every analysed page
+		return Promise.all( pageswlinks.map( page => {
+			// Parse every link in a specific page
+			return Promise.all( page.links.map( link => {
+				return get( link.url ).catch( brokenlink => { broken.crawled.push( brokenlink ) } )
+			} ) )
 		} ) )
 	} ).then( crawledlinks => {
-		console.log( crawledlinks )
+		console.log( broken )
 	} )
 	.catch( console.log.bind( console ) )
 	
