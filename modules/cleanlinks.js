@@ -1,4 +1,5 @@
 module.exports = ( base, links ) => {
+	link = link || []
 	return Promise.resolve( links.map( link => {
 		return link.replace( /^\/\//, 'https://' ).replace( /^\//, base )
 	} ).filter( link => {
