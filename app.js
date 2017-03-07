@@ -33,7 +33,10 @@ const checker = ( base, links )  => {
 		return Promise.all( pageswlinks.map( page => {
 			// Parse every link in a specific page
 			return Promise.all( page.links.map( link => {
-				return get( link ).catch( brokenlink => { broken.crawled.push( brokenlink ) } )
+				return get( link ).catch( brokenlink => {
+					brokenlink.source = page.source
+					broken.crawled.push( brokenlink )
+				} )
 			} ) )
 		} ) )
 	} ).then( crawledlinks => {
