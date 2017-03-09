@@ -1,6 +1,6 @@
 {
   "name": "check-broken-links",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Check array of links for contained broken links.",
   "main": "app.js",
   "scripts": {
