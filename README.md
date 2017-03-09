@@ -1,4 +1,4 @@
-# Check Broken Links
+# Check Broken Links [![Build Status](https://travis-ci.org/actuallymentor/check-broken-links.svg?branch=master)](https://travis-ci.org/actuallymentor/check-broken-links)
 
 An npm package that checks an array of supplied links for broken links.
 
