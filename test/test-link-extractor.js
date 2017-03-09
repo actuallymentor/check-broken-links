@@ -22,18 +22,8 @@ const demohtml = `
 describe( 'The url extractor', f => {
 
 	it( 'Returns the correct amount of links', done => {
-		extract( 'https://mocha.test', demohtml ).then( matches => {
-			expect( matches.links.length ).to.equal( 5 )
-			done( )
-		} ).catch( console.log.bind( console ) )
-	} )
-
-	it( 'Returns the correct structure', done => {
-		extract( 'https://mocha.test', demohtml ).then( matches => {
-			expect( matches.source ).to.equal( 'https://mocha.test' )
-			for (var i = matches.links.length - 1; i >= 0; i--) {
-				expect( matches.links[i].status ).to.equal( 'unchecked' )
-			}
+		extract( 'https://mocha.test/', 'https://mocha.test', demohtml ).then( matches => {
+			expect( matches.links.length ).to.equal( 2 )
 			done( )
 		} ).catch( console.log.bind( console ) )
 	} )
