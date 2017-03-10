@@ -48,12 +48,14 @@ describe( 'Links in the project', function( ) {
   this.timeout( process.env.maxtimeout || ( 1000 * 60 * 5 ) )
 
   // The current setup uses mocha in a promise fashion
-  // You could also have the callback be done => {}, but then need to call done() after the expect()
+  // You could also have the callback be done => {}, but then need to call done() after the expect(  )
   it( 'All return 200', () => {
     return ThisPromiseReturnsAllLinks()
     .then( brokenlinkarray => {
-      if ( brokenlinkarray.length > 0 ) console.table( brokenlinkarray )
-      expect( brokenlinkarray.length ).to.equal( 0 )
+      if ( broken.top.length > 0 ) console.log( 'Broken Top levels' ); console.table( broken.top )
+      if ( broken.crawled.length > 0 ) console.log( 'Broken crawled links' ); console.table( broken.crawled )
+      expect( broken.crawled.length ).to.equal( 0 )
+      expect( broken.top.length ).to.equal( 0 )
     } )
   } )
 } )
