@@ -26,3 +26,35 @@ check( 'https://base.url/', containsBroken ).then( brokenlinks => {
 ```
 
 The base url for the relative links has a required trailing slash.
+
+## Mocha testing example
+
+Let's say you want to check if your project has any broken links:
+
+```js
+// Get polyfill so we can use full ES6 in the tests
+import 'babel-polyfill'
+
+// Get the expect functionality
+import { expect } from 'chai'
+
+// Display results as table
+import 'console.table'
+
+// We do not use arrow syntax here because that would break the this.timeout
+describe( 'Links in the project', function( ) {
+
+  // Set the timeouts high so that all links can be checked without many or slow requests crashing the test
+  this.timeout( process.env.maxtimeout || ( 1000 * 60 * 5 ) )
+
+  // The current setup uses mocha in a promise fashion
+  // You could also have the callback be done => {}, but then need to call done() after the expect()
+  it( 'All return 200', () => {
+    return ThisPromiseReturnsAllLinks()
+    .then( brokenlinkarray => {
+      if ( brokenlinkarray.length > 0 ) console.table( brokenlinkarray )
+      expect( brokenlinkarray.length ).to.equal( 0 )
+    } )
+  } )
+} )
+```

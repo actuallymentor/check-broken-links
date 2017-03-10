@@ -14,7 +14,9 @@
     "broken",
     "link",
     "checker",
-    "test"
+    "test",
+    "mocha",
+    "promise"
   ],
   "author": "Mentor Palokaj <mentor@palokaj.co> (https://github.com/actuallymentor)",
   "license": "MIT",
