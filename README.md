@@ -48,7 +48,7 @@ describe( 'Links in the project', function( ) {
   this.timeout( process.env.maxtimeout || ( 1000 * 60 * 5 ) )
 
   // The current setup uses mocha in a promise fashion
-  // You could also have the callback be done => {}, but then need to call done() after the expect(  )
+  // You could also have the callback be done => {}, but then need to call done() after the expect()
   it( 'All return 200', () => {
     return ThisPromiseReturnsAllLinks()
     .then( brokenlinkarray => {
@@ -60,3 +60,14 @@ describe( 'Links in the project', function( ) {
   } )
 } )
 ```
+
+## Configuration
+
+Want the module to console.log every request set the environment variable 'verbose' to true:
+
+```shell
+verbose=true node app.js 
+```
+
+This will log out every request. Successfull requests turn green, failed ones red.
+

@@ -45,4 +45,6 @@ const checker = ( base, links )  => {
 	.catch( console.log.bind( console ) )
 }
 
+checker( 'https://www.google.com', [ 'https://www.google.com' ] ).then( console.log.bind( console ) )
+
 module.exports = checker
