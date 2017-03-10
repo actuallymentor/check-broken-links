@@ -40,7 +40,6 @@ const checker = ( base, links )  => {
 			} ) )
 		} ) )
 	} ).then( crawledlinks => {
-		console.log( broken )
 		return Promise.resolve( broken )
 	} )
 	.catch( console.log.bind( console ) )
