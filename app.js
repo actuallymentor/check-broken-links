@@ -7,7 +7,8 @@ const checker = ( base, links )  => {
 		crawled: []
 	}
 	// Clean up inputted links
-	return clean( base, links ).then( cleanlinks => {
+	return clean( base, links )
+	.then( cleanlinks => {
 		// Load all links
 		return Promise.all( cleanlinks.map( link => {
 			if ( process.env.debug ) console.log( 'Making GET promise for ' + link )

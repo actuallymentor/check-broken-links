@@ -1,21 +1,15 @@
 // Taken from https://mathiasbynens.be/demo/url-regex
 const jsdom = require( 'jsdom' )
+const { JSDOM } = jsdom
 
 const clean = require( __dirname + '/cleanlinks' )
 
-const makedom = html => {
-	return new Promise( ( resolve, reject ) => {
-		jsdom.env( html, ( err, window ) => {
-			if ( err ) return reject( err )
-			resolve( window )
-		} )
-	} )
-}
+const makedom = html => Promise.resolve( new JSDOM( html ) )
 
 const extract = ( base, source, html ) => {
 	return makedom( html )
-	.then( window => {
-		return Array.prototype.slice.call( window.document.links ).map( link => { return link.href } )
+	.then( thedom => {
+		return Array.prototype.slice.call( thedom.window.document.links ).map( link => { return link.href } )
 	} )
 	.then( links => {
 		if ( process.env.debug ) console.log( 'Parsing links for ' + source, links )

@@ -4,7 +4,7 @@
   "description": "Check array of links for contained broken links.",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --trace-warnings"
+    "test": "mocha --require babel-core/register --trace-warnings"
   },
   "repository": {
     "type": "git",
@@ -26,14 +26,14 @@
   "homepage": "https://github.com/actuallymentor/check-broken-links#readme",
   "dependencies": {
     "colors": "^1.1.2",
-    "jsdom": "^9.11.0",
+    "jsdom": "^11.6.2",
     "request": "^2.80.0"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",
     "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0"
+    "chai": "^4.1.2",
+    "mocha": "^5.0.5"
   }
 }
