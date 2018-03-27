@@ -41,6 +41,8 @@ const checker = ( base, links )  => {
 	.then( restructure )
 	// Now scan the links
 	.then( linksfromurls => {
+		// Add checked links to the top object
+		broken.allchecked = linksfromurls
 		if ( process.env.debug ) console.log( 'Scanning links extracted from url pages' )
 		// Check if the links are alove
 		return Promise.all( linksfromurls.map( thislink => get( thislink.link ).catch( kaput => broken.crawled.push( thislink ) ) ) )

@@ -18,7 +18,8 @@ check( 'https://base.url/', containsBroken ).then( brokenlinks => {
       crawled:
        [ { link: 'https://iwasinside.com/iCONTAINbrokenlinks ',
            sources: [ 'https://iwasfoundinthislinkyou supplied.com', 'https://butalsointhisone.com' ] }
-    ] }
+      ] },
+      allchecked: { [ link: '', sources: [] ] } // This would obviously be populated
     */
 } )
 ```
