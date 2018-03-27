@@ -21,7 +21,9 @@ const checker = ( base, links )  => {
 	} )
 	// Extract links from the supplied urls
 	.then( pages => {
-		pages = pages.filter( page => { return ( page != undefined ) } )
+		// Make sure there was a resonse
+		pages = pages.filter( page => page != undefined )
+		pages = pages.filter( page => page.html != undefined )
 		return Promise.all( pages.map( page => {
 			if ( process.env.debug ) console.log( 'Page extract for ' + page.url )
 			return extract( base, page.url, page.html ).catch( console.log.bind( console ) )
