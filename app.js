@@ -1,16 +1,20 @@
 const get = require( __dirname + '/modules/get' )
 const extract = require( __dirname + '/modules/link-extract' )
 const clean = require( __dirname + '/modules/cleanlinks' )
+const restructure = require( __dirname + '/modules/link-restructure' )
+
 const checker = ( base, links )  => {
 	let broken = {
+		// Top meaning the links you originally supplied
 		top: [],
+		// Crawled referring to the links extracted from the above 'top' links
 		crawled: []
 	}
-	// Clean up inputted links
+	// Clean up inputted links and add a base url for relative links
 	return clean( base, links )
 	// This step uses the sanitised links and GETs their content
 	.then( cleanlinks => {
-		// Load all links
+		// Create GET promises for all provided links
 		return Promise.all( cleanlinks.map( link => {
 			if ( process.env.debug ) console.log( 'Making GET promise for ' + link )
 			return get( link ).catch( brokentop => {
@@ -20,36 +24,42 @@ const checker = ( base, links )  => {
 			} )
 		} ) )
 	} )
-	// Extract links from the supplied urls
-	.then( pages => {
+	// The html bodies of the links above are now loaded
+	// Extract links from the bodies of supplied urls
+	.then( urlbodies => {
 		// Filter out empty responses
-		pages = pages.filter( page => page != undefined && page.html != undefined )
+		urlbodies = urlbodies.filter( page => page != undefined && page.html != undefined )
 
 		// Crawls page content and returns { source: 'sourceurl', links: [ 'links' ] }
-		return Promise.all( pages.map( page => {
+		return Promise.all( urlbodies.map( page => {
 			if ( process.env.debug ) console.log( 'Page extract for ' + page.url )
 			return extract( base, page.url, page.html ).catch( console.log.bind( console ) )
 		} ) )
 	} )
-	// Find broken links in the crawled results
-	// Structure is [
-	// 	{ source: 'sourceurl', links: [ 'links' ] }
-	// 	{ source: 'sourceurl', links: [ 'links' ] }
-	// 	{ source: 'sourceurl', links: [ 'links' ] }
-	// ]
-	.then( pageswlinks => {
-		if ( process.env.debug ) console.log( 'Extracted pages' )
-		// Parse every analysed page
-		return Promise.all( pageswlinks.map( page => {
-			// Parse every link in a specific page
-			return Promise.all( page.links.map( link => {
-				return get( link ).catch( brokenlink => {
-					brokenlink.source = page.source
-					broken.crawled.push( brokenlink )
-				} )
-			} ) )
-		} ) )
-	} ).then( crawledlinks => {
+	// Restructure the links to go from urls and the links they contain to links and what parent sources they have
+	// The output structure is [ { link: link, sources: [] }, { link: link, sources: [] } ]
+	.then( restructure )
+	// Now scan the links
+	.then( linksfromurls => {
+		if ( process.env.debug ) console.log( 'Scanning links extracted from url pages' )
+		// Check if the links are alove
+		return Promise.all( linksfromurls.map( thislink => get( thislink.link ).catch( kaput => broken.crawled.push( thislink ) ) ) )
+	} )
+	// .then( pageswlinks => {
+	// 	if ( process.env.debug ) console.log( 'Extracted pages' )
+	// 	// Parse every analysed page
+	// 	return Promise.all( pageswlinks.map( page => {
+	// 		// Parse every link in a specific page
+	// 		return Promise.all( page.links.map( link => {
+	// 			return get( link ).catch( brokenlink => {
+	// 				brokenlink.source = page.source
+	// 				broken.crawled.push( brokenlink )
+	// 			} )
+	// 		} ) )
+	// 	} ) )
+	// } )
+	.then( f => {
+		// Return the parent broken object
 		return Promise.resolve( broken )
 	} )
 	.catch( console.log.bind( console ) )

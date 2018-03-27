@@ -16,10 +16,8 @@ check( 'https://base.url/', containsBroken ).then( brokenlinks => {
     /*
     { top: [ { url: 'https://www.iAMbroken.com', err: [Object] } ],
       crawled:
-       [ { url: 'https://iwasinside.com/iCONTAINbrokenlinks ',
-           err: 404 },
-         { url: 'https://iwasalsoinside.com/iCONTAINbrokenlinks',
-           err: 404 }
+       [ { link: 'https://iwasinside.com/iCONTAINbrokenlinks ',
+           sources: [ 'https://iwasfoundinthislinkyou supplied.com', 'https://butalsointhisone.com' ] }
     ] }
     */
 } )
@@ -41,16 +39,22 @@ import { expect } from 'chai'
 // Display results as table
 import 'console.table'
 
+// Import the link checker
+const check = require( 'check-broken-links' )
+
 // We do not use arrow syntax here because that would break the this.timeout
 describe( 'Links in the project', function( ) {
 
   // Set the timeouts high so that all links can be checked without many or slow requests crashing the test
   this.timeout( process.env.maxtimeout || ( 1000 * 60 * 5 ) )
 
+  // Of course you would do some dynamic stuff to find links in the test below
+  let yourlinks = []
+
   // The current setup uses mocha in a promise fashion
   // You could also have the callback be done => {}, but then need to call done() after the expect()
   it( 'All return 200', () => {
-    return ThisPromiseReturnsAllLinks()
+    return check( yourlinks )
     .then( brokenlinkarray => {
       if ( broken.top.length > 0 ) console.log( 'Broken Top levels' ); console.table( broken.top )
       if ( broken.crawled.length > 0 ) console.log( 'Broken crawled links' ); console.table( broken.crawled )
