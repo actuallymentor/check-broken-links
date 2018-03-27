@@ -8,6 +8,7 @@ const checker = ( base, links )  => {
 	}
 	// Clean up inputted links
 	return clean( base, links )
+	// This step uses the sanitised links and GETs their content
 	.then( cleanlinks => {
 		// Load all links
 		return Promise.all( cleanlinks.map( link => {
@@ -21,15 +22,21 @@ const checker = ( base, links )  => {
 	} )
 	// Extract links from the supplied urls
 	.then( pages => {
-		// Make sure there was a resonse
-		pages = pages.filter( page => page != undefined )
-		pages = pages.filter( page => page.html != undefined )
+		// Filter out empty responses
+		pages = pages.filter( page => page != undefined && page.html != undefined )
+
+		// Crawls page content and returns { source: 'sourceurl', links: [ 'links' ] }
 		return Promise.all( pages.map( page => {
 			if ( process.env.debug ) console.log( 'Page extract for ' + page.url )
 			return extract( base, page.url, page.html ).catch( console.log.bind( console ) )
 		} ) )
 	} )
-	// Find broken links in the crwaled results
+	// Find broken links in the crawled results
+	// Structure is [
+	// 	{ source: 'sourceurl', links: [ 'links' ] }
+	// 	{ source: 'sourceurl', links: [ 'links' ] }
+	// 	{ source: 'sourceurl', links: [ 'links' ] }
+	// ]
 	.then( pageswlinks => {
 		if ( process.env.debug ) console.log( 'Extracted pages' )
 		// Parse every analysed page
