@@ -76,3 +76,9 @@ verbose=true node app.js
 
 This will log out every request. Successfull requests turn green, failed ones red.
 
+The GET requests have a default timeout of 60 seconds. You can set this using the 'gettimeout' environment variable in seconds.
+
+```shell
+# 2 minute timeout
+gettimeout=120 node app.js 
+```

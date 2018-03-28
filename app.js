@@ -47,19 +47,6 @@ const checker = ( base, links )  => {
 		// Check if the links are alove
 		return Promise.all( linksfromurls.map( thislink => get( thislink.link ).catch( kaput => broken.crawled.push( thislink ) ) ) )
 	} )
-	// .then( pageswlinks => {
-	// 	if ( process.env.debug ) console.log( 'Extracted pages' )
-	// 	// Parse every analysed page
-	// 	return Promise.all( pageswlinks.map( page => {
-	// 		// Parse every link in a specific page
-	// 		return Promise.all( page.links.map( link => {
-	// 			return get( link ).catch( brokenlink => {
-	// 				brokenlink.source = page.source
-	// 				broken.crawled.push( brokenlink )
-	// 			} )
-	// 		} ) )
-	// 	} ) )
-	// } )
 	.then( f => {
 		// Return the parent broken object
 		return Promise.resolve( broken )
