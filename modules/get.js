@@ -20,7 +20,7 @@ const get = url => {
 			response.statusCode == 200 ? resolve( { url: url, html: verifyhtml( body ) } ) : reject( { url: url, err: response.statusCode || '000' } )
 		} )	
 		// Set a timeout so that no GET can block the resolution of overarching promises, default is one minute
-		setTimeout( f => reject( 'Connection timed out', ( process.env.gettimeout * 1000 ) || ( 1000 * 60 ) ) )
+		setTimeout( f => reject( 'Connection timed out'), ( process.env.gettimeout * 1000 ) || ( 1000 * 60 ) )
 	} )
 }
 
